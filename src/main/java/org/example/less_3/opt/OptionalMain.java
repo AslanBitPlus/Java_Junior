@@ -27,6 +27,22 @@ public class OptionalMain {
         public Optional<String> getPassword() {
             return Optional.empty();
         }
+
+        public Long getId() {
+            return id;
+        }
+
+        public void setId(Long id) {
+            this.id = id;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
     }
 
     public static void main(String[] args) {
@@ -37,7 +53,7 @@ public class OptionalMain {
                         new User(2L, "user2@mail.com"),
                         new User(3L, "user_unnamed@mail.com"),
                         new User(4L, "user@gmail.com"))
-                .filter(it -> it.getId() == 2L)
+                .filter(it -> it.getId() == 2)
                 .findFirst();
 
 //    if (userOpt.isPresent()) {

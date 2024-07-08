@@ -8,6 +8,9 @@ import org.example.less_4.entity.Author;
 import org.example.less_4.entity.AuthorBook;
 import org.example.less_4.entity.Book;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class JPAMain {
 
     // employee(id, department_id)
@@ -29,15 +32,19 @@ public class JPAMain {
 
         Configuration configuration = new Configuration();
         configuration.configure(); // !!! иначе cfg.xml не прочитается
-        // === System.out.println(configuration.toString());
+        // System.out.println(configuration.toString());
         try (SessionFactory sessionFactory = configuration.buildSessionFactory()) {
             // sessionFactory <-> connection
+            System.out.println(sessionFactory.getClass());
+            // withSession(sessionFactory);
+            // withSessionCRUD(sessionFactory);
 
-            // === withSession(sessionFactory);
-            // === withSessionCRUD(sessionFactory);
+            // newAuthor(sessionFactory, "Михаил", "Иванов");
+
+            System.out.println(findAuthor(sessionFactory,1L).toString());
 
 
-//      withSessionCRUD(sessionFactory);
+
         }
     }
 
@@ -105,7 +112,7 @@ public class JPAMain {
         }
 
         try (Session session = sessionFactory.openSession()) {
-            Author toUpdate = session.find(Author.class, 22);
+            Author toUpdate = session.find(Author.class, 22L);
             session.detach(toUpdate);
             toUpdate.setF_name("UPDATED");
 
@@ -115,16 +122,41 @@ public class JPAMain {
         }
 
         try (Session session = sessionFactory.openSession()) {
-            Author toDelete = session.find(Author.class, 1);
+            Author toDelete = session.find(Author.class, 1L);
 
             Transaction tx = session.beginTransaction();
             session.remove(toDelete); // delete
             tx.commit();
         }
 
-
-
     }
+
+    private static void newAuthor(SessionFactory sessionFactory, String ln, String fn) {
+        // Create Session Factory and auto-close with try-with-resources.
+        try (Session session = sessionFactory.openSession()) {
+
+            Author author = new Author();
+
+            author.setL_name(ln);
+            author.setF_name(fn);
+            session.beginTransaction();
+
+            // Here we have used
+            session.getTransaction().begin();
+            session.persist(author);
+            session.getTransaction().commit();
+        }
+    }
+
+    public static Author findAuthor(SessionFactory sessionFactory,Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            System.out.println("=============== FIND ================");
+            System.out.println(id);
+            return session.find(Author.class, id);
+
+        }
+    }
+
 
 }
 

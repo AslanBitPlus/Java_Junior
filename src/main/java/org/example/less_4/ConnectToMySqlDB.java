@@ -4,8 +4,7 @@ import java.sql.*;
 
 public class ConnectToMySqlDB {
     public static void main(String[] args) {
-        connectToMySQL();
-
+        /*
         try{
             String url = "jdbc:mysql://localhost:3306/test";
             String username = "root";
@@ -22,9 +21,12 @@ public class ConnectToMySqlDB {
             System.out.println(ex);
         }
 
+         */
+        readData();
+
     }
 
-    public static void connectToMySQL() {
+    public static void readData() {
         Connection connection = null;
         try {
             // below two lines are used for connectivity.
